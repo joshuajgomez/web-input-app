@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetPlayer app</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; padding: 50px; }
+        input { padding: 10px; width: 300px; margin-bottom: 10px; }
+        button { padding: 10px 20px; cursor: pointer; background: #039be5; color: white; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <h2>Send url to NetPlayer app</h2>
+    <input type="text" id="title" placeholder="Enter an optional title">
+    <input type="text" id="url" placeholder="Paste url...">
+    <button id="button">Send to app</button>
+
+    <p id="status"></p>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA5QQDN46uReeE6OABNPOGQXTMNgBKxzR0",
+            authDomain: "net-player-487fb.firebaseapp.com",
+            projectId: "net-player-487fb",
+            storageBucket: "net-player-487fb.firebasestorage.app",
+            messagingSenderId: "348345092057",
+            appId: "1:348345092057:web:91c0d640682c0965997bc8",
+            measurementId: "G-CP6GYWB7N0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const docId = urlParams.get('id'); // This looks for "?id="
+
+        const urlInput = document.getElementById('url');
+        const titleInput = document.getElementById('title');
+        const status = document.getElementById('status');
+
+        button.addEventListener('click', () => {
+            try {
+                if (docId) {
+                    // Update existing document instead of creating a new one
+                    const docRef = doc(db, "video_links", docId);
+                    setDoc(docRef, {
+                        url: urlInput.value,
+                        title: titleInput.value,
+                        added: new Date()
+                    }, { merge: true });
+                } else {
+                    status.innerText = "Missing id param";    
+                }
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                status.innerText = "Typing session expired. Scan qrcode again";
+            }
+        });
+    </script>
+</body>
+</html>
