@@ -46,12 +46,11 @@
         button.addEventListener('click', () => {
             try {
                 if (docId) {
-                    // Update existing document instead of creating a new one
                     const docRef = doc(db, "video_links", docId);
                     setDoc(docRef, {
                         url: urlInput.value,
                         title: titleInput.value,
-                        added: new Date()
+                        added: Date.now()
                     }, { merge: true });
                 } else {
                     status.innerText = "Missing id param";    
