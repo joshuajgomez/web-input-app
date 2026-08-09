@@ -11,10 +11,30 @@
     </style>
 </head>
 <body>
+    <style>
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        textarea {
+            width: 100%;
+            display: block;
+        }
+    </style>
 
     <h2>Send url to NetPlayer app</h2>
-    <input type="text" id="url" placeholder="Paste url...">
-    <input type="text" id="title" placeholder="Enter an optional title">
+    <div class="input-group">
+        <label for="url">URL Input</label>
+        <textarea id="url" rows="4" placeholder="Paste URL here..."></textarea>
+    </div>
+
+    <div class="input-group">
+        <label for="title">Title (Optional)</label>
+        <textarea id="title" rows="3" placeholder="Title will appear here..."></textarea>
+    </div>
     <button id="button">Send to app</button>
 
     <p id="status"></p>
@@ -65,7 +85,7 @@
             const newTitle = tryToGetTitle(urlInput.value);
 
             // Update the UI
-            titleInput.value = newTitle || "dd";
+            titleInput.value = newTitle || "No title";
         });
 
         function tryToGetTitle(value) {
