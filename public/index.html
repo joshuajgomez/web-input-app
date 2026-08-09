@@ -13,8 +13,8 @@
 <body>
 
     <h2>Send url to NetPlayer app</h2>
-    <input type="text" id="title" placeholder="Enter an optional title">
     <input type="text" id="url" placeholder="Paste url...">
+    <input type="text" id="title" placeholder="Enter an optional title">
     <button id="button">Send to app</button>
 
     <p id="status"></p>
@@ -60,6 +60,25 @@
                 status.innerText = "Typing session expired. Scan qrcode again";
             }
         });
+
+        urlInput.addEventListener('input', () => {
+            const newTitle = tryToGetTitle(urlInput.value);
+
+            // Update the UI
+            titleInput.value = newTitle || "dd";
+        });
+
+        function tryToGetTitle(value) {
+            try {
+                if (!value) return "";
+                // Remove query string, then get everything after the last slash
+                const urlWithoutQuery = value.split('?')[0];
+                const title = urlWithoutQuery.split('/').pop();
+                return title || "";
+            } catch (e) {
+                return "";
+            }
+        }
     </script>
 </body>
 </html>
