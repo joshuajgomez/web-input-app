@@ -73,6 +73,8 @@
                         title: titleInput.value,
                         added: Date.now()
                     }, { merge: true });
+                    titleInput.value = "";
+                    urlInput.value = "";
                 } else {
                     status.innerText = "Missing id param";    
                 }
